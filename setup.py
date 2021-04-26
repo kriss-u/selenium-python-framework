@@ -74,7 +74,9 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Run the selenium tests")
     parser.add_argument("-u", "--url", help="the URL to test", default=None)
     parser.add_argument("-e", "--env-file",
-                        help="specify the file where environment variables are located (default .env)")
+                        help="the file where environment variables are located (default: .env)")
     parser.add_argument("-d", "--driver",
                         help="the path of the driver (should contain gecko, chrome, etc. in the filename)")
+    parser.add_argument("-s", "--screenshots-dir",
+                        help="the directory path to store screenshots (default: screenshots)")
     return parser.parse_args()
