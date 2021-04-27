@@ -32,7 +32,7 @@ optional arguments:
                         (default: .env)
   -b BROWSER, --browser BROWSER
                         the browser to run tests on (must be on the
-                        drivers.config[platform][]
+                        drivers.config[platform][][type])
   -d DRIVER, --driver DRIVER
                         the path of the driver (should contain gecko, chrome,
                         etc. in the filename)

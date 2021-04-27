@@ -82,7 +82,7 @@ def parse_arguments():
     parser.add_argument("-e", "--env-file",
                         help="the file where environment variables are located (default: .env)")
     parser.add_argument("-b", "--browser",
-                        help="the browser to run tests on (must be on the drivers.config[platform][]")
+                        help="the browser to run tests on (must be on the drivers.config[platform][][type])")
     parser.add_argument("-d", "--driver",
                         help="the path of the driver (should contain gecko, chrome, etc. in the filename)")
     parser.add_argument("-s", "--screenshots-dir",
