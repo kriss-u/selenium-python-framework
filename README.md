@@ -5,8 +5,8 @@ A testing framework using selenium in python.
 
 ## Setup
 ### Pre-requisites
-Python: >= 3.5
-### **[Recommended]** Create a virtual environment *[Optional]*
+Python: >= 3.7
+### **[Recommended]** Create a virtual environment
 * Create a virtual environment using `venv` or `virtualenv`.
 * Activate the environment.
 
