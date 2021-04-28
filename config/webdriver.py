@@ -1,30 +1,35 @@
-import argparse
-import platform
-
-from drivers import config, select_driver, load_driver_from_path_or_env
-import dotenv
-import os
 import collections
+import platform
+import os
+from config.platform_drivers import config
+from selenium.webdriver import Chrome, Firefox
+
+from selenium.common.exceptions import WebDriverException
 
 
-def load_env(file_path):
-    """
-    Load the environment variables from a file
+def select_driver(browser_type="chrome"):
+    if browser_type == "chrome":
+        return Chrome
+    if browser_type in ["gecko", "firefox"]:
+        return Firefox
 
-    :param file_path: The file path of the environment variables
-    :return: None
-    """
-    file_path_local = file_path
-    if file_path is None:
-        file_path_local = os.path.join(os.path.dirname(__file__), '.env')
 
-    if not os.path.isfile(file_path_local):
-        raise FileNotFoundError
+def load():
+    pass
+
+
+def load_driver_from_path_or_env(selected_driver, driver_type, driver_path=None, env_variable=None):
+    if env_variable in os.environ:
+        driver_path_env = os.environ[env_variable]
+        if driver_path_env != "":
+            return selected_driver(executable_path=os.path.abspath(driver_path_env))
+    if os.path.exists(driver_path):
+        return selected_driver(executable_path=driver_path)
 
     try:
-        dotenv.load_dotenv(os.path.abspath(file_path_local))
-    except TypeError:
-        dotenv.load_dotenv()
+        return selected_driver()
+    except WebDriverException:
+        print(f"{driver_type} driver not found.")
 
 
 def load_driver(driver_path, browser=None):
@@ -69,22 +74,3 @@ def load_driver(driver_path, browser=None):
             return load_driver_from_path_or_env(selected_driver, drivers[k]["type"], driver_path_local, env_variable)
         else:
             raise Exception("Drivers not found.")
-
-
-def parse_arguments():
-    """
-    Parses the arguments supplied by user using CLI
-
-    :return: The namespace which contains the arguments and their values
-    """
-    parser = argparse.ArgumentParser(description="Run the selenium tests")
-    parser.add_argument("-u", "--url", help="the URL to test", default=None)
-    parser.add_argument("-e", "--env-file",
-                        help="the file where environment variables are located (default: .env)")
-    parser.add_argument("-b", "--browser",
-                        help="the browser to run tests on (must be on the drivers.config[platform][][type])")
-    parser.add_argument("-d", "--driver",
-                        help="the path of the driver (should contain gecko, chrome, etc. in the filename)")
-    parser.add_argument("-s", "--screenshots-dir",
-                        help="the directory path to store screenshots (default: screenshots)")
-    return parser.parse_args()
