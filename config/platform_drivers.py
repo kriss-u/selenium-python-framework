@@ -1,20 +1,10 @@
-
-
-config = {
+platform_exec = {
     "windows": {
-        0: {
-            "type": "chrome",
-            "exec": "chromedriver.exe"
-        },
-        1: {
-            "type": "gecko",
-            "exec": "geckodriver.exe"
-        }
+        "chrome": "chromedriver.exe",
+        "gecko": "geckodriver.exe",
     },
     "linux": {
     },
     "mac": {
     }
 }
-
-

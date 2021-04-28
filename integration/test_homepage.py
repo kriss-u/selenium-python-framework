@@ -1,5 +1,4 @@
 class TestHomepage:
-
     def test_one(self, driver):
         driver.get("https://www.google.com")
 

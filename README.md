@@ -19,24 +19,23 @@ python -m pip install -r requirements.txt
 
 ## Usage
 ```
-usage: main.py [-h] [-u URL] [-e ENV_FILE] [-b BROWSER] [-d DRIVER]
-               [-s SCREENSHOTS_DIR]
+usage: pytest [-U URL] [-E ENV_FILE] [-B BROWSER] [-D DRIVER]
+               [-S SCREENSHOTS_DIR]
 
 Run the selenium tests
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -u URL, --url URL     the URL to test
-  -e ENV_FILE, --env-file ENV_FILE
+  -U URL, --url URL     the URL to test
+  -E ENV_FILE, --env-file ENV_FILE
                         the file where environment variables are located
                         (default: .env)
-  -b BROWSER, --browser BROWSER
+  -B BROWSER, --browser BROWSER
                         the browser to run tests on (must be on the
                         drivers.config[platform][][type])
-  -d DRIVER, --driver DRIVER
+  -D DRIVER, --driver DRIVER
                         the path of the driver (should contain gecko, chrome,
                         etc. in the filename)
-  -s SCREENSHOTS_DIR, --screenshots-dir SCREENSHOTS_DIR
+  -S SCREENSHOTS_DIR, --screenshots-dir SCREENSHOTS_DIR
                         the directory path to store screenshots (default:
                         screenshots)
 

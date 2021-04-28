@@ -1,76 +1,35 @@
-import collections
-import platform
 import os
-from config.platform_drivers import config
-from selenium.webdriver import Chrome, Firefox
+import platform
+import sys
 
-from selenium.common.exceptions import WebDriverException
+from selenium import webdriver
 
-
-def select_driver(browser_type="chrome"):
-    if browser_type == "chrome":
-        return Chrome
-    if browser_type in ["gecko", "firefox"]:
-        return Firefox
+from config import platform_exec
 
 
-def load():
-    pass
+def get_driver_instance(request, driver_type, driver):
+    system = platform.system().lower()
+    driver_path_arg = request.config.getoption("driver")
+    driver_name_project = platform_exec[system][driver_type]
+    driver_path_project = os.path.join('drivers', driver_name_project)
+    driver_path_project = (os.path.exists(
+        os.path.join(request.config.rootdir, driver_path_project)) and driver_path_project) or None
+    driver_path_default = os.environ.get(f"DRIVER_{driver_type.upper()}") or driver_path_project
+    driver_path = (driver_path_arg and os.path.join(os.getcwd(), driver_path_arg)) or (
+            driver_path_default and os.path.join(request.config.rootdir, driver_path_default)) or ""
+
+    sys.path.append(os.path.abspath(os.path.join(driver_path_default, os.pardir)))
+
+    if driver_path == "":
+        return driver()
+    return driver(executable_path=os.path.abspath(driver_path))
 
 
-def load_driver_from_path_or_env(selected_driver, driver_type, driver_path=None, env_variable=None):
-    if env_variable in os.environ:
-        driver_path_env = os.environ[env_variable]
-        if driver_path_env != "":
-            return selected_driver(executable_path=os.path.abspath(driver_path_env))
-    if os.path.exists(driver_path):
-        return selected_driver(executable_path=driver_path)
+def load_driver(request):
+    browser = request.config.getoption("browser") or ""
+    # if browser == "firefox":
+    #     return get_driver_instance(request, "gecko", webdriver.Firefox)
+    if browser == "chrome":
+        return get_driver_instance(request, "chrome", webdriver.Chrome)
 
-    try:
-        return selected_driver()
-    except WebDriverException:
-        print(f"{driver_type} driver not found.")
-
-
-def load_driver(driver_path, browser=None):
-    """
-    Load the driver for testing as per the argument provided
-    :param browser: The browser supplied from the argument
-    :param driver_path: The path supplied by user for the driver
-    :return: The webdriver instance of the browser
-    """
-    platform_system = platform.system().lower()
-    drivers = config[platform_system]
-    drivers_sorted = collections.OrderedDict(sorted(drivers.items()))
-
-    if browser is not None and browser != "":
-        browser = browser.lower()
-        if driver_path is not None and driver_path != "":
-            selected_driver = select_driver(browser)
-            return selected_driver(executable_path=os.path.abspath(driver_path))
-        else:
-            if browser == "firefox":
-                browser = "gecko"
-
-            driver_exec = list(filter(lambda x: x["type"] == browser, drivers.values()))[0]["exec"]
-            print(driver_exec)
-            env_variable = f"DRIVER_{browser.upper()}"
-            selected_driver = select_driver(browser)
-            driver_path_local = f"drivers/{platform_system}/{driver_exec}"
-
-            return load_driver_from_path_or_env(selected_driver, browser, driver_path_local, env_variable)
-
-    if driver_path is not None and driver_path != "":
-        for k in drivers_sorted:
-            if drivers[k]["type"] in driver_path.lower():
-                selected_driver = select_driver(drivers[k]["type"])
-                return selected_driver(executable_path=os.path.join(os.path.dirname(__file__), driver_path))
-    else:
-        for k in drivers_sorted:
-            env_variable = f"DRIVER_{drivers[k]['type'].upper()}"
-            selected_driver = select_driver(drivers[k]["type"])
-
-            driver_path_local = f"drivers/{platform_system}/{drivers[k]['exec']}"
-            return load_driver_from_path_or_env(selected_driver, drivers[k]["type"], driver_path_local, env_variable)
-        else:
-            raise Exception("Drivers not found.")
+    return get_driver_instance(request, "gecko", webdriver.Firefox)
