@@ -21,7 +21,6 @@ def setup_screenshots(request):
     Otherwise, the a screenshots directory is created in the project root
 
     :param request: Pytest request parameter
-    :param dir_path_arg: directory path supplied by user (can be relative or absolute)
     :return: The absolute directory path
     """
     dir_path_arg = request.config.getoption("screenshots_dir")
