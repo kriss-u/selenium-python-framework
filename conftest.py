@@ -9,7 +9,7 @@ from config import setup_screenshots
 
 
 def pytest_addoption(parser):
-    parser.addoption("-U", "--url", help="the URL to test")
+    parser.addoption("-U", "--base-url", help="the URL to test")
     parser.addoption("-E", "--env-file",
                      help="the file where environment variables are located (default: .env)")
     parser.addoption("-B", "--browser",
@@ -27,6 +27,14 @@ def load_env(request):
         dotenv.load_dotenv()
     else:
         dotenv.load_dotenv(os.path.abspath(os.path.join(request.config.rootdir, env_file)))
+
+
+@pytest.fixture(scope="session", autouse=True)
+def url(request, load_env):
+    base_url = request.config.getoption("base_url") or os.environ.get("BASE_URL") or ""
+    if base_url == "":
+        pytest.exit("Please set a BASE_URL environment variable or pass one in -U/--base-url option")
+    yield base_url
 
 
 @pytest.fixture(scope="session")
