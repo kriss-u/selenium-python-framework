@@ -19,13 +19,13 @@ python -m pip install -r requirements.txt
 
 ## Usage
 ```
-usage: pytest [-U URL] [-E ENV_FILE] [-B BROWSER] [-D DRIVER]
+usage: pytest [-U BASE_URL] [-E ENV_FILE] [-B BROWSER] [-D DRIVER]
                [-S SCREENSHOTS_DIR]
 
 Run the selenium tests
 
 optional arguments:
-  -U URL, --url URL     the URL to test
+  -U URL, --base-url URL     the base URL to test
   -E ENV_FILE, --env-file ENV_FILE
                         the file where environment variables are located
                         (default: .env)
