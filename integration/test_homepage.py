@@ -2,7 +2,7 @@ import pytest
 from selenium.webdriver.common.by import By
 
 from pages import Homepage
-from utils import assert_in_all
+from utilities import assert_in_all
 
 
 class TestHomepage:

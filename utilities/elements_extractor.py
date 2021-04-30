@@ -2,8 +2,8 @@ from selenium.common import exceptions as e
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from utils.expected_conditions import element_contains_text, all_elements_contain_text
-from utils.webdriver import wait
+from utilities.expected_conditions import element_contains_text, all_elements_contain_text
+from utilities.webdriver import wait
 
 
 def find_visibility(condition, driver, locator, locator_type, exception=Exception, wait_duration=10):

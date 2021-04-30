@@ -1,8 +1,8 @@
 from selenium.webdriver.common.by import By
 
-from utils import find_all_contains_text
-from utils import find_one_present
-from utils import wait
+from utilities import find_all_contains_text
+from utilities import find_one_present
+from utilities import wait
 
 
 class Homepage:
