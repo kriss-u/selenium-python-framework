@@ -1,8 +1,8 @@
 import pytest
 from selenium.webdriver.common.by import By
 
-from pages.homepage import Homepage
-from utils import assert_in
+from pages import Homepage
+from utils import assert_in_all
 
 
 class TestHomepage:
@@ -18,10 +18,10 @@ class TestHomepage:
     def test_valid_search_suggestion(self, homepage):
         homepage.open()
         results = homepage.type_search("google")
-        assert_in("google", results)
+        assert_in_all("google", results)
         homepage.clear_search()
         results = homepage.type_search("facebook")
-        assert_in("facebook", results)
+        assert_in_all("facebook", results)
 
     def test_i_am_feeling_lucky_btn(self, homepage, driver):
         homepage.open()
